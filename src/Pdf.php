@@ -5,6 +5,7 @@ namespace Spatie\PdfToText;
 use Spatie\PdfToText\Exceptions\CouldNotExtractText;
 use Spatie\PdfToText\Exceptions\PdfNotFound;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Process\ExecutableFinder;
 
 class Pdf
 {
@@ -18,7 +19,9 @@ class Pdf
 
     public function __construct(?string $binPath = null)
     {
-        $this->binPath = $binPath ?? '/usr/bin/pdftotext';
+        $this->binPath = (new ExecutableFinder())->find('pdftotext', 'pdftotext', [
+            '/usr/local/bin',
+        ]);
     }
 
     public function setPdf(string $pdf): self
